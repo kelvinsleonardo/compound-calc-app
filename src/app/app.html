@@ -54,6 +54,17 @@
                             <label class="form-label fw-bold">
                                 <i class="bi bi-percent me-1"></i>
                                 Taxa Mensal
+                                @if (selicAtualizada()) {
+                                    <span class="badge bg-success ms-2" style="font-size: 0.65rem;">
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        SELIC Atualizada
+                                    </span>
+                                }
+                                @if (carregandoSelic()) {
+                                    <span class="spinner-border spinner-border-sm ms-2" role="status">
+                                        <span class="visually-hidden">Carregando...</span>
+                                    </span>
+                                }
                             </label>
                             <div class="input-group">
                                 <input
@@ -69,7 +80,11 @@
                             </div>
                             <small class="form-text text-muted">
                                 <i class="bi bi-info-circle me-1"></i>
-                                Ex: 0.8% ao mês = CDI aproximado
+                                @if (selicAtualizada()) {
+                                    Taxa SELIC oficial do Banco Central
+                                } @else {
+                                    Ex: 0.8% ao mês = CDI aproximado
+                                }
                             </small>
                         </div>
 
@@ -100,7 +115,7 @@
                                   <i class="bi bi-calendar-range me-1"></i>
                                   Período
                                 </span>
-                                   <span class="badge bg-primary badge-custom">
+                                <span class="badge bg-primary badge-custom">
                                       @if (numeroMeses() >= 12) {
                                           {{ Math.floor(numeroMeses() / 12) }} {{ Math.floor(numeroMeses() / 12) === 1 ? 'ano' : 'anos' }}
                                           @if (numeroMeses() % 12 > 0) {

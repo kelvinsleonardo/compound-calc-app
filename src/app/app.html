@@ -284,6 +284,23 @@
                     </div>
                 </div>
 
+                <div class="card mt-4 shadow-lg">
+                    <div class="card-body p-4">
+                        <apx-chart
+                                [series]="chartOptions.series!"
+                                [chart]="chartOptions.chart!"
+                                [xaxis]="chartOptions.xaxis!"
+                                [yaxis]="chartOptions.yaxis!"
+                                [dataLabels]="chartOptions.dataLabels!"
+                                [stroke]="chartOptions.stroke!"
+                                [title]="chartOptions.title!"
+                                [legend]="chartOptions.legend!"
+                                [grid]="chartOptions.grid!"
+                                [colors]="chartOptions.colors!"
+                        ></apx-chart>
+                    </div>
+                </div>
+
                 <!-- Informações Adicionais -->
                 <div class="alert alert-info mt-4 shadow-sm" role="alert">
                     <div class="d-flex">

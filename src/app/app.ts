@@ -1,10 +1,23 @@
-import {Component, computed, signal, OnInit} from '@angular/core';
+import {Component, computed, signal, OnInit, ViewChild, effect} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Workbook} from 'exceljs';
 import {saveAs} from 'file-saver';
 import {HttpClient} from '@angular/common/http';
 import {catchError, of} from 'rxjs';
+import {
+    ApexAxisChartSeries,
+    ApexChart,
+    ApexXAxis,
+    ApexDataLabels,
+    ApexStroke,
+    ApexYAxis,
+    ApexTitleSubtitle,
+    ApexLegend,
+    ApexGrid,
+    ChartComponent,
+    NgApexchartsModule
+} from "ng-apexcharts";
 
 interface MesInvestimento {
     mes: number;
@@ -19,14 +32,30 @@ interface SelicResponse {
     data: string;
 }
 
+export type ChartOptions = {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    xaxis: ApexXAxis;
+    yaxis: ApexYAxis;
+    dataLabels: ApexDataLabels;
+    stroke: ApexStroke;
+    title: ApexTitleSubtitle;
+    legend: ApexLegend;
+    grid: ApexGrid;
+    colors: string[];
+};
+
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, NgApexchartsModule],
     templateUrl: './app.html',
     styleUrls: ['./app.css']
 })
 export class AppComponent implements OnInit {
+    @ViewChild("chart") chart!: ChartComponent;
+    public chartOptions: Partial<ChartOptions>;
+
     title = 'Calculadora de Investimentos';
 
     valorInicial = signal(10000);
@@ -37,6 +66,12 @@ export class AppComponent implements OnInit {
     selicAtualizada = signal(false);
 
     constructor(private http: HttpClient) {
+        this.chartOptions = this.getChartOptions();
+
+        effect(() => {
+            const evolucao = this.evolucaoMensal();
+            this.updateChartData(evolucao);
+        });
     }
 
     ngOnInit() {
@@ -46,8 +81,6 @@ export class AppComponent implements OnInit {
     carregarTaxaSelic() {
         this.carregandoSelic.set(true);
 
-        // API do Banco Central - Meta SELIC (definida pelo COPOM)
-        // Serie 432 = Meta SELIC
         const urlSelic = 'https://api.bcb.gov.br/dados/serie/bcdata.sgs.432/dados/ultimos/1?formato=json';
 
         this.http.get<SelicResponse[]>(urlSelic).pipe(
@@ -60,7 +93,6 @@ export class AppComponent implements OnInit {
 
             if (response && response.length > 0) {
                 const taxaSelicAnual = parseFloat(response[0].valor);
-                // Converter taxa anual para mensal: (1 + taxa_anual/100)^(1/12) - 1
                 const taxaMensal = (Math.pow(1 + taxaSelicAnual / 100, 1 / 12) - 1) * 100;
 
                 console.log(`📊 SELIC META do Banco Central:`);
@@ -109,6 +141,123 @@ export class AppComponent implements OnInit {
         return (this.rendimentoTotal() / this.totalInvestido()) * 100;
     });
 
+    getChartOptions(): Partial<ChartOptions> {
+        return {
+            series: [
+                {
+                    name: "Total Investido",
+                    data: []
+                },
+                {
+                    name: "Saldo Final",
+                    data: []
+                },
+                {
+                    name: "Rendimento",
+                    data: []
+                }
+            ],
+            chart: {
+                height: 350,
+                type: "area",
+                toolbar: {
+                    show: true,
+                    tools: {
+                        download: true,
+                        zoom: true,
+                        zoomin: true,
+                        zoomout: true,
+                        pan: true,
+                        reset: true
+                    }
+                },
+                animations: {
+                    enabled: true,
+                    speed: 800
+                }
+            },
+            colors: ['#2c3e50', '#1a1a1a', '#2a2a2a'],
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: "smooth",
+                width: 2
+            },
+            xaxis: {
+                categories: [],
+                title: {
+                    text: 'Meses'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Valor (R$)'
+                },
+                labels: {
+                    formatter: (value) => {
+                        return new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                        }).format(value);
+                    }
+                }
+            },
+            title: {
+                text: 'Evolução',
+                align: 'left',
+                style: {
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    color: '#0a0a0a'
+                }
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right'
+            },
+            grid: {
+                borderColor: '#e5e5e5',
+                strokeDashArray: 4
+            }
+        };
+    }
+
+    updateChartData(evolucao: MesInvestimento[]) {
+        const meses = evolucao.map(item => `Mês ${item.mes}`);
+        const totalInvestidoData = evolucao.map((item, index) =>
+            this.valorInicial() + (this.aporteMensal() * (index + 1))
+        );
+        const saldoFinalData = evolucao.map(item => item.saldoFinal);
+        const rendimentoData = evolucao.map((item, index) =>
+            item.saldoFinal - (this.valorInicial() + (this.aporteMensal() * (index + 1)))
+        );
+
+        this.chartOptions = {
+            ...this.chartOptions,
+            series: [
+                {
+                    name: "Total Investido",
+                    data: totalInvestidoData
+                },
+                {
+                    name: "Saldo Final",
+                    data: saldoFinalData
+                },
+                {
+                    name: "Rendimento Acumulado",
+                    data: rendimentoData
+                }
+            ],
+            xaxis: {
+                ...this.chartOptions.xaxis,
+                categories: meses
+            }
+        };
+    }
+
     updateValorInicial(event: Event) {
         const value = (event.target as HTMLInputElement).value;
         this.valorInicial.set(Number(value) || 0);
@@ -117,7 +266,7 @@ export class AppComponent implements OnInit {
     updateTaxaMensal(event: Event) {
         const value = (event.target as HTMLInputElement).value;
         this.taxaMensal.set(Number(value) || 0);
-        this.selicAtualizada.set(false); // Marca como taxa manual
+        this.selicAtualizada.set(false);
     }
 
     updateAporteMensal(event: Event) {

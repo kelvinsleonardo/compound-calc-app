@@ -22,7 +22,7 @@ FROM nginx:alpine
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copiar arquivos buildados do Angular
-COPY --from=build /app/dist/investimentos-bootstrap/browser /usr/share/nginx/html
+COPY --from=build /app/dist/compount-calc-app/browser /usr/share/nginx/html
 
 # Expor porta 80
 EXPOSE 80

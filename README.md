@@ -103,7 +103,7 @@ Clique no botão **"Exportar Excel"** no canto superior direito para:
 ## 📂 Estrutura do Projeto
 
 ```
-investimentos-bootstrap/
+compount-calc-app/
 ├── src/
 │   ├── app/
 │   │   ├── app.ts              # Componente principal com lógica

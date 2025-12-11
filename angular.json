@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "investimentos-bootstrap": {
+    "compount-calc-app": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -56,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "investimentos-bootstrap:build:production"
+              "buildTarget": "compount-calc-app:build:production"
             },
             "development": {
-              "buildTarget": "investimentos-bootstrap:build:development"
+              "buildTarget": "compount-calc-app:build:development"
             }
           },
           "defaultConfiguration": "development"

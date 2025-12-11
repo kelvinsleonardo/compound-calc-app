@@ -1,0 +1,304 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <i class="bi bi-graph-up-arrow fs-4 me-2"></i>
+            <span class="fw-bold">{{ title }}</span>
+        </a>
+        <button class="btn btn-success btn-export" (click)="exportarParaExcel()">
+            <i class="bi bi-file-earmark-excel me-2"></i>
+            Exportar Excel
+        </button>
+    </div>
+</nav>
+
+<div class="app-container">
+    <div class="container-fluid px-4">
+        <div class="row g-4">
+
+            <!-- Coluna Esquerda: Inputs e Métricas -->
+            <div class="col-lg-4 animate-fade-in">
+
+                <!-- Card de Parâmetros -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-sliders2 me-2"></i>
+                            Parâmetros da Simulação
+                        </h5>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- Valor Inicial -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-cash-coin me-1"></i>
+                                Valor Inicial
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input
+                                        type="number"
+                                        class="form-control form-control-lg"
+                                        [value]="valorInicial()"
+                                        (input)="updateValorInicial($event)"
+                                        min="0"
+                                        step="100"
+                                        placeholder="10000"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Taxa Mensal -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-percent me-1"></i>
+                                Taxa Mensal
+                            </label>
+                            <div class="input-group">
+                                <input
+                                        type="number"
+                                        class="form-control form-control-lg"
+                                        [value]="taxaMensal()"
+                                        (input)="updateTaxaMensal($event)"
+                                        min="0"
+                                        step="0.1"
+                                        placeholder="0.8"
+                                />
+                                <span class="input-group-text">%</span>
+                            </div>
+                            <small class="form-text text-muted">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Ex: 0.8% ao mês = CDI aproximado
+                            </small>
+                        </div>
+
+                        <!-- Aporte Mensal -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-arrow-repeat me-1"></i>
+                                Aporte Mensal
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input
+                                        type="number"
+                                        class="form-control form-control-lg"
+                                        [value]="aporteMensal()"
+                                        (input)="updateAporteMensal($event)"
+                                        min="0"
+                                        step="50"
+                                        placeholder="500"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Período -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold d-flex justify-content-between">
+                                <span>
+                                  <i class="bi bi-calendar-range me-1"></i>
+                                  Período
+                                </span>
+                                   <span class="badge bg-primary badge-custom">
+                                      @if (numeroMeses() >= 12) {
+                                          {{ Math.floor(numeroMeses() / 12) }} {{ Math.floor(numeroMeses() / 12) === 1 ? 'ano' : 'anos' }}
+                                          @if (numeroMeses() % 12 > 0) {
+                                              e {{ numeroMeses() % 12 }} {{ numeroMeses() % 12 === 1 ? 'mês' : 'meses' }}
+                                          }
+                                      } @else {
+                                          {{ numeroMeses() }} {{ numeroMeses() === 1 ? 'mês' : 'meses' }}
+                                      }
+                                </span>
+                            </label>
+                            <input
+                                    type="range"
+                                    class="form-range"
+                                    [value]="numeroMeses()"
+                                    (input)="updateNumeroMeses($event)"
+                                    min="1"
+                                    max="240"
+                            />
+                            <div class="d-flex justify-content-between mt-1">
+                                <small class="text-muted">1 mês</small>
+                                <small class="text-muted">30 anos (360 meses)</small>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Métricas Principais -->
+                <div class="card metric-card mb-3 shadow-lg">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <small class="d-block opacity-75 mb-1">TOTAL INVESTIDO</small>
+                                <h3>{{ formatCurrency(totalInvestido()) }}</h3>
+                            </div>
+                            <i class="bi bi-wallet2 display-4 opacity-50"></i>
+                        </div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-light" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card metric-card-success mb-3 shadow-lg">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <small class="d-block opacity-75 mb-1">SALDO FINAL</small>
+                                <h3>{{ formatCurrency(saldoFinal()) }}</h3>
+                                <small class="opacity-75">Após {{ numeroMeses() }} meses</small>
+                            </div>
+                            <i class="bi bi-trophy display-4 opacity-50"></i>
+                        </div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-light" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Métricas Secundárias -->
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="card bg-success text-white shadow">
+                            <div class="card-body text-center">
+                                <i class="bi bi-graph-up fs-3 mb-2"></i>
+                                <small class="d-block mb-1">Rendimento</small>
+                                <h5 class="mb-0">{{ formatCurrency(rendimentoTotal()) }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card bg-info text-white shadow">
+                            <div class="card-body text-center">
+                                <i class="bi bi-lightning-charge fs-3 mb-2"></i>
+                                <small class="d-block mb-1">Rentabilidade</small>
+                                <h5 class="mb-0">{{ formatPercent(rentabilidadePercentual()) }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Coluna Direita: Tabela -->
+            <div class="col-lg-8 animate-fade-in">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-bar-chart-line-fill me-2"></i>
+                                Evolução Mensal do Investimento
+                            </h5>
+                            <span class="badge bg-light text-dark px-3 py-2">
+                <i class="bi bi-table me-1"></i>
+                                {{ evolucaoMensal().length }} períodos
+              </span>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 80px;">
+                                        <i class="bi bi-hash me-1"></i>
+                                        Mês
+                                    </th>
+                                    <th class="text-end">
+                                        <i class="bi bi-wallet me-1"></i>
+                                        Saldo Inicial
+                                    </th>
+                                    <th class="text-end">
+                                        <i class="bi bi-plus-circle me-1"></i>
+                                        Aporte
+                                    </th>
+                                    <th class="text-end">
+                                        <i class="bi bi-graph-up me-1"></i>
+                                        Rendimento
+                                    </th>
+                                    <th class="text-end">
+                                        <i class="bi bi-currency-dollar me-1"></i>
+                                        Saldo Final
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @for (item of evolucaoMensal(); track item.mes) {
+                                        <tr>
+                                            <td class="text-center">
+                                                <span class="badge bg-secondary">{{ item.mes }}</span>
+                                            </td>
+                                            <td class="text-end">{{ formatCurrency(item.saldoInicial) }}</td>
+                                            <td class="text-end text-primary fw-semibold">
+                                                {{ formatCurrency(item.aporte) }}
+                                            </td>
+                                            <td class="text-end text-success fw-bold">
+                                                <i class="bi bi-arrow-up-circle-fill me-1"></i>
+                                                {{ formatCurrency(item.rendimento) }}
+                                            </td>
+                                            <td class="text-end fw-bold fs-6">
+                                                {{ formatCurrency(item.saldoFinal) }}
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                <tr class="table-secondary fw-bold">
+                                    <td class="text-center">
+                                        <i class="bi bi-calculator me-1"></i>
+                                        TOTAL
+                                    </td>
+                                    <td class="text-end">-</td>
+                                    <td class="text-end text-primary">
+                                        {{ formatCurrency(aporteMensal() * numeroMeses()) }}
+                                    </td>
+                                    <td class="text-end text-success">
+                                        {{ formatCurrency(rendimentoTotal()) }}
+                                    </td>
+                                    <td class="text-end fs-5">
+                                        {{ formatCurrency(saldoFinal()) }}
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informações Adicionais -->
+                <div class="alert alert-info mt-4 shadow-sm" role="alert">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="bi bi-info-circle-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <h6 class="alert-heading mb-2">Como funciona?</h6>
+                            <p class="mb-1">
+                                <strong>Juros Compostos:</strong> Os rendimentos são calculados sobre o saldo inicial + aporte do mês.
+                            </p>
+                            <p class="mb-0">
+                                <strong>Exportação:</strong> Clique em "Exportar Excel" para salvar todos os dados em formato XLSX.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center text-white py-4 mt-5">
+    <div class="container">
+        <p class="mb-0">
+            <i class="bi bi-shield-check me-2"></i>
+            Simulação baseada em juros compostos com aportes mensais regulares
+        </p>
+        <small class="opacity-75">Valores são aproximados. Consulte seu banco ou corretora para informações precisas.</small>
+    </div>
+</footer>

@@ -1,0 +1,461 @@
+/* Importando Bootstrap base */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Tema Enterprise Premium - Preto/Branco/Cinza */
+:root {
+  --primary-dark: #0a0a0a;
+  --secondary-dark: #1a1a1a;
+  --accent-gray: #2a2a2a;
+  --border-gray: #e5e5e5;
+  --text-primary: #0a0a0a;
+  --text-secondary: #6b7280;
+  --bg-light: #fafafa;
+  --bg-white: #ffffff;
+  --hover-gray: #f5f5f5;
+}
+
+body {
+  background-color: var(--bg-light);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.app-container {
+  padding: 1.5rem 0;
+}
+
+/* Navbar Enterprise - Compacto */
+.navbar {
+  background-color: var(--primary-dark) !important;
+  border-bottom: 1px solid var(--accent-gray);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 0.75rem 0;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: 1rem;
+}
+
+/* Cards Premium - Compactos */
+.card {
+  border: 1px solid var(--border-gray);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--bg-white);
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  background-color: var(--primary-dark);
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  letter-spacing: -0.01em;
+}
+
+.card-body {
+  background-color: var(--bg-white);
+  padding: 1rem;
+  color: var(--text-primary);
+}
+
+/* Métricas Premium - Compactas */
+.metric-card {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+  color: white;
+  border-radius: 8px;
+  border: 1px solid var(--accent-gray);
+}
+
+.metric-card:hover {
+  background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--accent-gray) 100%);
+}
+
+.metric-card .card-body {
+  background: transparent;
+  color: white;
+  padding: 1rem;
+}
+
+.metric-card h3,
+.metric-card small,
+.metric-card .opacity-75 {
+  color: white !important;
+}
+
+.metric-card-success {
+  background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--accent-gray) 100%);
+  color: white;
+  border-radius: 8px;
+}
+
+.metric-card-success:hover {
+  background: linear-gradient(135deg, var(--accent-gray) 0%, var(--secondary-dark) 100%);
+}
+
+.metric-card-success .card-body {
+  background: transparent;
+  color: white;
+  padding: 1rem;
+}
+
+.metric-card-success h3,
+.metric-card-success small,
+.metric-card-success .opacity-75 {
+  color: white !important;
+}
+
+.metric-card h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+/* Cards de métricas secundárias */
+.bg-success,
+.bg-info {
+  color: white !important;
+}
+
+.bg-success .card-body,
+.bg-info .card-body {
+  background: transparent !important;
+  color: white !important;
+}
+
+.bg-success {
+  background-color: var(--secondary-dark) !important;
+}
+
+.bg-info {
+  background-color: var(--accent-gray) !important;
+}
+
+.bg-success h5,
+.bg-success small,
+.bg-info h5,
+.bg-info small {
+  color: white !important;
+}
+
+/* Tabela Enterprise - Compacta */
+.table-responsive {
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
+  border: 1px solid var(--border-gray);
+  border-radius: 8px;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--primary-dark) !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem;
+}
+
+.table tbody tr {
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid var(--border-gray);
+  background-color: var(--bg-white);
+}
+
+.table tbody tr:hover {
+  background-color: var(--hover-gray) !important;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.table tfoot {
+  position: sticky;
+  bottom: 0;
+  background-color: var(--bg-light);
+  font-weight: 700;
+  z-index: 5;
+  border-top: 2px solid var(--primary-dark);
+}
+
+.table tfoot td {
+  padding: 0.75rem;
+  color: var(--text-primary);
+}
+
+/* Inputs Enterprise - Compactos */
+.form-label {
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  margin-bottom: 0.375rem;
+  letter-spacing: -0.01em;
+}
+
+.form-control {
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background-color: var(--bg-white);
+  color: var(--text-primary);
+}
+
+.form-control:focus {
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.05);
+  outline: none;
+  background-color: var(--bg-white);
+}
+
+.input-group-text {
+  font-weight: 600;
+  min-width: 45px;
+  background-color: var(--primary-dark);
+  color: white;
+  border: 1px solid var(--primary-dark);
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.input-group .form-control {
+  font-size: 0.875rem;
+}
+
+.form-text {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Range Slider Premium */
+.form-range {
+  height: 4px;
+}
+
+.form-range::-webkit-slider-thumb {
+  background: var(--primary-dark);
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-range::-moz-range-thumb {
+  background: var(--primary-dark);
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-range::-webkit-slider-track {
+  background: var(--border-gray);
+  height: 4px;
+  border-radius: 2px;
+}
+
+/* Botão Export Premium - Compacto */
+.btn-export {
+  background-color: var(--primary-dark);
+  color: white;
+  border: 1px solid var(--primary-dark);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  letter-spacing: -0.01em;
+}
+
+.btn-export:hover {
+  background-color: var(--secondary-dark);
+  border-color: var(--secondary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  color: white;
+}
+
+/* Badges Enterprise - Compactos */
+.badge {
+  font-weight: 600;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
+}
+
+.badge-custom {
+  background-color: var(--primary-dark);
+  color: white;
+}
+
+.text-success {
+  color: var(--primary-dark) !important;
+  font-weight: 600;
+}
+
+.text-primary {
+  color: var(--text-secondary) !important;
+}
+
+/* Animações Sutis */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Scroll Premium */
+.table-responsive::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: var(--bg-light);
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--accent-gray);
+  border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-dark);
+}
+
+/* Alert Enterprise - Compacto */
+.alert-info {
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-gray);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.alert-heading {
+  color: var(--primary-dark);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.alert-info p {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Footer - Compacto */
+footer {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  padding: 1.5rem 0;
+}
+
+/* Espaçamentos compactos */
+.mb-3 {
+  margin-bottom: 0.75rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 1rem !important;
+}
+
+.g-3 {
+  --bs-gutter-y: 0.75rem;
+  --bs-gutter-x: 0.75rem;
+}
+
+.g-4 {
+  --bs-gutter-y: 1rem;
+  --bs-gutter-x: 1rem;
+}
+
+/* Responsividade */
+@media (max-width: 991px) {
+  .app-container {
+    padding: 0.75rem;
+  }
+
+  .metric-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .navbar-brand {
+    font-size: 0.9rem;
+  }
+}
+
+/* Typography refinada */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+small, .small {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+/* Melhor contraste para ícones */
+.bi {
+  opacity: 0.9;
+}
+
+/* Shadow system enterprise */
+.shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+.shadow-lg {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Garantir cor branca em cards dark */
+.text-white {
+  color: white !important;
+}
+
+.d-block {
+  color: inherit;
+}

@@ -6,14 +6,14 @@ WORKDIR /app
 # Copiar package files
 COPY package*.json ./
 
-# Instalar dependências
-RUN npm ci --only=production
+# Instalar dependências (incluindo devDependencies para o build)
+RUN npm ci
 
 # Copiar código fonte
 COPY . .
 
-# Build da aplicação
-RUN npm run build --configuration production
+# Build da aplicação Angular
+RUN npm run build
 
 # Production stage
 FROM nginx:alpine
